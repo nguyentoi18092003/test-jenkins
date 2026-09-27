@@ -25,6 +25,8 @@
             <!--            <class name="ptit.orangehrm.intergrationTests.Pim_And_MyInfo"></class>-->
 <!--                        <class name="ptit.orangehrm.clientTests.Login.Login"></class>-->
             <class name="testJenkins"></class>
+            <class name="LoginTest"/>
+            <class name="SearchTest"/>
 
 <!--            <class name="ptit.orangehrm.Tests.TimeModule.PunchIn_PunchOut"></class>-->
 <!--            <class name="ptit.orangehrm.Tests.pimModule.EmployeeManagement"></class>-->

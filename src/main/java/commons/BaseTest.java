@@ -233,27 +233,44 @@ public class BaseTest {
     public static class TestTypeFilter implements IMethodInterceptor {
         @Override
         public List<IMethodInstance> intercept(List<IMethodInstance> methods, ITestContext context) {
-            // 1. Doc che do chay tu Jenkins/Maven (-DtestType=...)
             String testType = System.getProperty("testType");
+            String testClass = System.getProperty("testClass");
 
-            // 2. Khong truyen hoac chon "all" -> giu nguyen danh sach, chay het
-            if (testType == null || testType.isBlank() || testType.equalsIgnoreCase("all")) {
-                System.out.println(">>> Che do chay: ALL | So testcase: " + methods.size());
-                return methods;
-            }
-
-            // 3. Chi giu lai testcase co groups trung voi che do duoc chon
             List<IMethodInstance> result = new ArrayList<>();
             for (IMethodInstance m : methods) {
-                for (String group : m.getMethod().getGroups()) {
-                    if (group.equalsIgnoreCase(testType)) {
-                        result.add(m);
-                        break;
-                    }
+                if (matchClass(m, testClass) && matchType(m, testType)) {
+                    result.add(m);
                 }
             }
-            System.out.println(">>> Che do chay: " + testType + " | So testcase: " + result.size());
+
+            System.out.println(">>> Che do chay: " + (isAll(testType) ? "ALL" : testType)
+                    + " | Class: " + (isAll(testClass) ? "ALL" : testClass)
+                    + " | So testcase: " + result.size());
             return result;
+        }
+
+        private boolean isAll(String value) {
+            return value == null || value.isBlank() || value.equalsIgnoreCase("all");
+        }
+
+        private boolean matchType(IMethodInstance m, String testType) {
+            if (isAll(testType)) return true;
+            for (String group : m.getMethod().getGroups()) {
+                if (group.equalsIgnoreCase(testType)) return true;
+            }
+            return false;
+        }
+
+        private boolean matchClass(IMethodInstance m, String testClass) {
+            if (isAll(testClass)) return true;
+            Class<?> clazz = m.getMethod().getRealClass();
+            for (String name : testClass.split(",")) {
+                String n = name.trim();
+                if (n.equalsIgnoreCase(clazz.getSimpleName()) || n.equalsIgnoreCase(clazz.getName())) {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }
