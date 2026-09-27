@@ -1,10 +1,8 @@
-
-
 import commons.BaseTest;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import reportConfig.ExtentTestManager;
@@ -18,22 +16,43 @@ public class testJenkins extends BaseTest {
     private pageObjects.testJenkins youtubePage;
 
     @Parameters({"url", "browser"})
-    @BeforeClass
-    public void beforeClass(String url, String browserName) {
-        // trong hàm getBrowserDriver mình đã xử lý theo kiểu nếu nó khoogn lấy được biến từ jenkins nó sẽ lấy giá trị mặc định của url, trình duyệt từ file xml
+    @BeforeMethod(alwaysRun = true)
+    public void beforeMethod(String url, String browserName) {
         driver = getBrowserDriver(browserName, url);
         this.browserName = browserName;
         youtubePage = new pageObjects.testJenkins(driver);
     }
 
-    @Test
+    @Test(groups = "regression")
     public void TC_01_Verify_Youtube_Logo_Displayed(Method method) {
         ExtentTestManager.startTest(method.getName() + "-" + browserName.toUpperCase(), "Verify logo Youtube hien thi");
         Assert.assertTrue(youtubePage.verifyTitleDisplay(), "Logo Youtube khong hien thi");
     }
 
-    @AfterClass(alwaysRun = true)
-    public void afterClass() {
+    @Test(groups = "regression")
+    public void TC_02_Verify_Youtube_Logo_Displayed(Method method) {
+        ExtentTestManager.startTest(method.getName() + "-" + browserName.toUpperCase(), "Verify logo Youtube hien thi");
+        Assert.assertTrue(youtubePage.verifyTitleDisplay(), "Logo Youtube khong hien thi");
+    }
+
+    @Test(groups = "regression")
+    public void TC_03_Verify_Youtube_Logo_Displayed(Method method) {
+        ExtentTestManager.startTest(method.getName() + "-" + browserName.toUpperCase(), "Verify logo Youtube hien thi");
+        Assert.assertTrue(youtubePage.verifyTitleDisplay(), "Logo Youtube khong hien thi");
+    }
+    @Test(groups = "smoke")
+    public void TC_04_Verify_Youtube_Logo_Displayed(Method method) {
+        ExtentTestManager.startTest(method.getName() + "-" + browserName.toUpperCase(), "Verify logo Youtube hien thi");
+        Assert.assertTrue(youtubePage.verifyTitleDisplay(), "Logo Youtube khong hien thi");
+    }
+    @Test(groups = "smoke")
+    public void TC_05_Verify_Youtube_Logo_Displayed(Method method) {
+        ExtentTestManager.startTest(method.getName() + "-" + browserName.toUpperCase(), "Verify logo Youtube hien thi");
+        Assert.assertTrue(youtubePage.verifyTitleDisplay(), "Logo Youtube khong hien thi");
+    }
+
+    @AfterMethod(alwaysRun = true)
+    public void afterMethod() {
         closeBrowser();
     }
 }

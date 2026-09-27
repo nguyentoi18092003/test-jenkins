@@ -21,7 +21,14 @@ import java.io.IOException;
 import java.time.Duration;
 import java.util.Locale;
 import java.util.Random;
+import org.testng.IMethodInstance;
+import org.testng.IMethodInterceptor;
+import org.testng.ITestContext;
+import org.testng.annotations.Listeners;
 
+import java.util.ArrayList;
+import java.util.List;
+@Listeners(BaseTest.TestTypeFilter.class)
 public class BaseTest {
     private WebDriver driver;
 
@@ -221,6 +228,32 @@ public class BaseTest {
             }
         } catch (Exception e) {
             System.out.print(e.getMessage());
+        }
+    }
+    public static class TestTypeFilter implements IMethodInterceptor {
+        @Override
+        public List<IMethodInstance> intercept(List<IMethodInstance> methods, ITestContext context) {
+            // 1. Doc che do chay tu Jenkins/Maven (-DtestType=...)
+            String testType = System.getProperty("testType");
+
+            // 2. Khong truyen hoac chon "all" -> giu nguyen danh sach, chay het
+            if (testType == null || testType.isBlank() || testType.equalsIgnoreCase("all")) {
+                System.out.println(">>> Che do chay: ALL | So testcase: " + methods.size());
+                return methods;
+            }
+
+            // 3. Chi giu lai testcase co groups trung voi che do duoc chon
+            List<IMethodInstance> result = new ArrayList<>();
+            for (IMethodInstance m : methods) {
+                for (String group : m.getMethod().getGroups()) {
+                    if (group.equalsIgnoreCase(testType)) {
+                        result.add(m);
+                        break;
+                    }
+                }
+            }
+            System.out.println(">>> Che do chay: " + testType + " | So testcase: " + result.size());
+            return result;
         }
     }
 }
