@@ -20,6 +20,7 @@ public class testJenkins extends BaseTest {
     @Parameters({"url", "browser"})
     @BeforeClass
     public void beforeClass(String url, String browserName) {
+        // trong hàm getBrowserDriver mình đã xử lý theo kiểu nếu nó khoogn lấy được biến từ jenkins nó sẽ lấy giá trị mặc định của url, trình duyệt từ file xml
         driver = getBrowserDriver(browserName, url);
         this.browserName = browserName;
         youtubePage = new pageObjects.testJenkins(driver);

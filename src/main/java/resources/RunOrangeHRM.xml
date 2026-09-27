@@ -10,10 +10,10 @@
                 class-name="reportConfig.ExtentTestListener"/>  <!--         dong nay cho vao thi su dung report Extent5-->
     </listeners>
 
-    <parameter name="url" value="https://www.youtube.com/"/>
+    <parameter name="url" value="url_lay_tu_jenkins_sau"/>
 
     <test name="Run on Firefox">
-        <parameter name="browser" value="chrome"/>
+        <parameter name="browser" value="trinh_duyet_lay_tu_jenkins_sau"/>
 
         <classes>
             <!--            <class name="ptit_orangehrm_pim.PIM_01_Employee"></class>-->

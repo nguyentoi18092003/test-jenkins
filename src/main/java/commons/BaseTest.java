@@ -57,6 +57,18 @@ public class BaseTest {
     }
 
     protected WebDriver getBrowserDriver(String browserName,String url){
+        // Uu tien gia tri tu ben ngoai (-Dbrowser, -Durl), khong co thi dung gia tri trong file xml
+        String browserFromOutside = System.getProperty("browser");
+        if (browserFromOutside != null && !browserFromOutside.isBlank()) {
+            browserName = browserFromOutside;
+        }
+
+        String urlFromOutside = System.getProperty("url");
+        if (urlFromOutside != null && !urlFromOutside.isBlank()) {
+            url = urlFromOutside;
+        }
+
+        System.out.println(">>> Chay voi browser = " + browserName + " | url = " + url);
         BrowserList browser=BrowserList.valueOf(browserName.toUpperCase());
         if(browser==BrowserList.FIREFOX){
             driver=new FirefoxDriver();
